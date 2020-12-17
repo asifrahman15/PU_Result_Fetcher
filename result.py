@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from pyautogui import screenshot
+import time
 
 def isAlertPresent(driver): 
   try:
@@ -49,11 +50,12 @@ def getAllSemesterResult(driver, registerNumber, semesterfrom, semesterTo, scree
         title = driver.find_element_by_xpath('//*[@id="results_subject_table"]/tbody/tr[' + str(r) + ']/td[2]').text
         grade = driver.find_element_by_xpath('//*[@id="results_subject_table"]/tbody/tr[' + str(r) + ']/td[7]').text
         allSemResult[title] = grade
-      if screen :
+      if screen:
         cover = driver.find_element_by_id('result_success_div')
         driver.execute_script('arguments[0].scrollIntoView();', cover)
+        time.sleep(0.1)
         screen = screenshot()
-        screen.save(str(registerNumber) + ' ' + str(semester) + '.png')
+        screen.save('Screenshots/' + str(registerNumber) + ' ' + str(semester) + '.png')
       driver.find_element_by_xpath('//*[@id="main_frame"]/div/div[2]/div[2]').click()
 
   return allSemResult, driver

@@ -7,7 +7,7 @@ from result import getAllSemesterResult                 # To fetch results
 
 # Main Module -->
 
-book, sheet, fileName = getSheet()
+book, sheet, filePath = getSheet()
 
 semFrom, semTo, col, start, end, screen = getRegNoData()
 
@@ -31,6 +31,6 @@ for currentRow in range(start, end+1):
       sheet.cell(row = 1, column = colCount).value = subject
       sheet.cell(row = currentRow, column = colCount).value = allSemResult[subject]
       print('The Subject "' + subject + '" not present in the table. So, it is added in the last')
-book.save(fileName)
+book.save(filePath)
 driver.quit()
 print('The Results are Fetched Successfully...!')
