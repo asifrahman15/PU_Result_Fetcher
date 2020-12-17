@@ -1,12 +1,13 @@
 import openpyxl                 # To work with Excel Files
+from os import getcwd
 
 def getSheet():                 # To get the The Input Sheet
   count = 5                     # To avoid Infinite try maximum count is mentioned
   while count >= 0:
     try:
-      path = input('Please Enter the full path of the Input Sheet : ')
+      fileName = input('Please Enter the Sheet Name (Please have the sheet in Current Directory) : ')
+      path = getcwd() + '/' + fileName
       wb = openpyxl.load_workbook(path)
-      fileName = path.split('/').pop()
 
       return wb, wb.active, fileName
     except:
@@ -19,5 +20,12 @@ def getRegNoData():
   end = int(input('The Row in the Register Number Ends : '))
   semfrom = int(input('From which Semester : '))
   semto = int(input('Until which Semester : '))
-  return semfrom, semto, col, start, end
+  screeninp = input('Need Screenshots (yes/no): ').lower()
+  if screeninp == 'yes':
+    screen = True
+    print('Screenshot is Enabled...!')
+  else :
+    screen = False
+    print('Screenshot is Disabled...!')
+  return semfrom, semto, col, start, end, screen
   
