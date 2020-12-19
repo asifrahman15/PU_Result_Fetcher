@@ -7,14 +7,19 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}">
   <style>
     * {
       font-size: 20px;
     }
     .btn:hover{
-      background-color: seagreen;
-      border-color: seagreen;
+      background-color: rgb(15, 0, 82);
+      border-color: rgb(15, 0, 82);
       box-shadow: 3px 3px 6px #000000;
+    }
+    .shutdown{
+      background-color: rgb(82, 0, 0);
+      border-color: rgb(82, 0, 0);
     }
     .btn{
       box-shadow: 2px 2px 4px #000000;
@@ -65,12 +70,11 @@
         <label class="col" for="semTo">Highest Semester : </label>
         <input class="col" type="number" name="semTo" id="semTo" data-toggle="popover" data-trigger="hover focus" title="Highest Semester" data-content="The possible higher most semester to which the data need to be fetched (Note: leave this blank for only one semester).">
       </div>
-      <div class="custom-switch d-flex justify-content-center mt-2 row">
+      <div class="custom-switch d-flex justify-content-center mt-3 row">
         <input type="checkbox" class="custom-control-input" id="screenshot" name="screenshot">
         <label class="custom-control-label" for="screenshot" data-toggle="popover" data-trigger="hover" title="Screenshots" data-content="To save all the results in screenshots enable this option.">Screenshots</label>
       </div>
       <div class="alert alert-success text-center mt-2 p-1" id="screenshotStatus" style="display: none;">Screenshot is enabled...!</div>
-      
 
       {% if message%}
         <div class="d-flex justify-content-center mt-4">
@@ -95,8 +99,9 @@
         </div>
       {% endif %}
       
-      <div class="row mt-4 d-flex justify-content-center">
+      <div class="row mt-4 d-flex justify-content-around">
         <input class="btn btn-primary" type="submit" value="Get Results">
+        <a href="/shutdown" class="btn btn-secondary shutdown">Shutdown</a>
       </div>
     </form>
   </div>

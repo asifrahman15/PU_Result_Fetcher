@@ -56,6 +56,15 @@ def home():
     newCols = puResult(wb, wb.active, filePath, driver, column, rowFrom, rowTo, semFrom, semTo, screenCap)
     return render_template('index.html', message='Successfully all the results are fetched...', mode="success", listed=newCols)
 
-
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+    
+@app.route('/shutdown', methods=['GET'])
+def shutdown():
+    shutdown_server()
+    return render_template('shutdown.html')
 if __name__ == '__main__':
   app.run(debug = True)
