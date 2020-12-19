@@ -14,7 +14,6 @@ def home():
   elif request.method == 'POST':
     fileName = request.form['sheetName']
     filePath = request.form['filePath']
-    webdriverName = request.form['webdriverName']
     webdriverPath = request.form['webdriverPath']
     column = int(request.form['column'])
     rowFrom = int(request.form['rowFrom'])
@@ -43,28 +42,31 @@ def home():
     
     try:
       if webdriverPath:
-        webdriverPath = webdriverPath + '/' + webdriverName
+        webdriverPath = webdriverPath + '/chromedriver'
       else:
-        webdriverPath = getcwd() + '/' + webdriverName
-      driver = webdriver.Chrome(executable_path = webdriverPath)
+        webdriverPath = getcwd() + '/chromedriver'
+        driver = webdriver.Chrome(executable_path = webdriverPath)
     except:
       return render_template('index.html', message='Please check the webdriver path carefully and Try again...', mode='danger')
 
     if screenCap == True and not path.exists('Screenshots'):
       makedirs('Screenshots')
-
-    newCols = puResult(wb, wb.active, filePath, driver, column, rowFrom, rowTo, semFrom, semTo, screenCap)
-    return render_template('index.html', message='Successfully all the results are fetched...', mode="success", listed=newCols)
+    try:  
+      newCols = puResult(wb, wb.active, filePath, driver, column, rowFrom, rowTo, semFrom, semTo, screenCap)
+      return render_template('index.html', message='Successfully all the results are fetched...', mode="success", listed=newCols)
+    except:
+      return render_template('index.html', message='Some error occured please restart the app and Try again....', mode='danger')
 
 def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
+  func = request.environ.get('werkzeug.server.shutdown')
+  if func is None:
+      raise RuntimeError('Not running with the Werkzeug Server')
+  func()
     
 @app.route('/shutdown', methods=['GET'])
 def shutdown():
-    shutdown_server()
-    return render_template('shutdown.html')
+  shutdown_server()
+  return render_template('shutdown.html')
+
 if __name__ == '__main__':
-  app.run(debug = True)
+  app.run(debug = False)
