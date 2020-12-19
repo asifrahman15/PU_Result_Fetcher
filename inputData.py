@@ -1,19 +1,25 @@
 import openpyxl                 # To work with Excel Files
-from os import path, makedirs
+from os import path, makedirs, getcwd
 
 def getSheet():                 # To get the The Input Sheet
   count = 5                     # To avoid Infinite try maximum count is mentioned
   while count >= 0:
     try:
+      print('Please read the Readme for any assistancy')
       fileName = input('Enter the sheet name : ')
-      path = input('Enter the sheet directory (leave blank if it in current directory) : ')
-      if path :
-        filePath = path + '/' + fileName
+      path1 = input('Enter the sheet directory (leave blank if it is in current directory) : ')
+      if path1 :
+        filePath = path1 + '/' + fileName
       else :
         filePath = fileName
       wb = openpyxl.load_workbook(filePath)
+      path2 = input('Enter the "chromedriver" application directory (leave blank if it is in current directory) : ')
+      if path2 :
+        chromePath = path2 + '/chromedriver'
+      else :
+        chromePath = getcwd() + '/chromedriver'
 
-      return wb, wb.active, filePath
+      return wb, wb.active, filePath, chromePath
     except:
       print('Please check the path carefully and try again ' + str(count) + ' chances left...')
       count -= 1

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pondicherry University Result Fetcher</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <style>
+    * {
+      font-size: 20px;
+    }
+    .btn:hover{
+      background-color: seagreen;
+      border-color: seagreen;
+      box-shadow: 3px 3px 6px #000000;
+    }
+    .btn{
+      box-shadow: 2px 2px 4px #000000;
+    }
+    .card{
+      box-shadow: 5px 5px 15px #000000;
+    }
+    body{
+      background-color: rgb(230, 230, 230);
+    }
+  </style>
+</head>
+<body>
+  <div class="card my-3 mx-5">
+    <h3 class="card-title text-center pt-3 pb-2">Pondicherry University Results Fetching app</h3>
+    <hr class="m-0">
+    <form class="card-body mx-auto" action="" method="POST">
+      <div class="row mt-2">
+        <label class="col" for="sheetName">Sheet Name : </label>
+        <input class="col" type="text" name="sheetName" id="path" required data-toggle="popover" data-trigger="hover focus" title="Sheet Name" data-content="Enter the sheet name with extension (Eg.: Sheet.xlsx, Note: The document should have only one sheet and it should not contain any formatings).">
+      </div>
+      <div class="row mt-2">
+        <label class="col" for="filePath">Sheet Path : </label>
+        <input class="col" type="text" name="filePath" id="filePath" data-toggle="popover" data-trigger="hover focus" title="Sheet Directory" data-content="Enter the sheet directory (leave blank if the sheet is in current directory).">
+      </div>
+      <div class="row mt-2">
+        <label class="col" for="webdriverName">Webdriver Name : </label>
+        <input class="col" type="text" name="webdriverName" id="webdriverName" required data-toggle="popover" data-trigger="hover focus" title="Webdriver Name" data-content="Enter the webdriver application Name (Eg,: chromedriver.exe for Microsoft Windows, Note: Only use chrome).">
+      </div>
+      <div class="row mt-2">
+        <label class="col" for="webdriverPath">Webdriver Path : </label>
+        <input class="col" type="text" name="webdriverPath" id="webdriverPath" data-toggle="popover" data-trigger="hover focus" title="Webdriver Directory" data-content="Enter the webdriver application directory (Note: leave blank if the webdriver is in current directory).">
+      </div>
+      <div class="row mt-2">
+        <label class="col" for="column">Column (In Number) : </label>
+        <input class="col" type="number" name="column" id="column" data-toggle="popover" required data-trigger="hover focus" title="Column Vaue" data-content="The column in which the register numbers are listed in the sheet (Eg.: 2 (for B column)).">
+      </div>
+      <div class="row mt-2">
+        <label class="col" for="rowFrom">Starting Row : </label>
+        <input class="col" type="number" name="rowFrom" id="rowFrom" data-toggle="popover" required data-trigger="hover focus" title="Starting Row" data-content="The row in which the register numbers list starts in the sheet (Note: For a single register number, only use this and leave row end blank).">
+      </div><div class="row mt-2">
+        <label class="col" for="rowTo">Ending Row : </label>
+        <input class="col" type="number" name="rowTo" id="rowTo" data-toggle="popover" data-trigger="hover focus" title="Ending Row" data-content="The row in which the register numbers list ends in the sheet (Note: leave this blank for only one register number).">
+      </div><div class="row mt-2">
+        <label class="col" for="semFrom">Lowest Semester : </label>
+        <input class="col" type="number" name="semFrom" id="semFrom" data-toggle="popover" required data-trigger="hover focus" title="Lowest Semester" data-content="The possible lower most semester from which the data need to be fetched (Note: For a single semester, only use this and leave highest semester blank).">
+      </div><div class="row mt-2">
+        <label class="col" for="semTo">Highest Semester : </label>
+        <input class="col" type="number" name="semTo" id="semTo" data-toggle="popover" data-trigger="hover focus" title="Highest Semester" data-content="The possible higher most semester to which the data need to be fetched (Note: leave this blank for only one semester).">
+      </div>
+      <div class="custom-switch d-flex justify-content-center mt-2 row">
+        <input type="checkbox" class="custom-control-input" id="screenshot" name="screenshot">
+        <label class="custom-control-label" for="screenshot" data-toggle="popover" data-trigger="hover" title="Screenshots" data-content="To save all the results in screenshots enable this option.">Screenshots</label>
+      </div>
+      <div class="alert alert-success text-center mt-2 p-1" id="screenshotStatus" style="display: none;">Screenshot is enabled...!</div>
+      
+
+      {% if message%}
+        <div class="d-flex justify-content-center mt-4">
+          <div class="alert alert-{{mode}}">
+          {% if mode == 'danger' %}
+            <strong>Please check Again! </strong>{{message}}.
+          {% elif mode == 'success'%}
+            <strong>success! </strong>{{message}}.
+          {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      
+      {% if listed %}
+        <div class="alert alert-secondary">
+          <strong>Newly Added Columns</strong>
+          <ul>
+          {% for item in listed %}
+            <li>{{item}}</li>
+          {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      
+      <div class="row mt-4 d-flex justify-content-center">
+        <input class="btn btn-primary" type="submit" value="Get Results">
+      </div>
+    </form>
+  </div>
+  <footer class="text-center m-2">
+    <div class="text-center">
+      <span style="vertical-align: middle;">
+        Designed by <b><i>Aasif Rahman M </i></b>
+      </span>
+      <a href="https://wa.me/918056371496" target="_blank"><img src="{{url_for('static', filename='whatsapp.png')}}" height="25" style="vertical-align: middle;"></a>
+      <a href="mailto:asifrahman15@gmail.com" target="_blank"><img src="{{url_for('static', filename='gmail.png')}}" height="25" style="vertical-align: middle;"></a>
+      <a href="https://join.skype.com/invite/VpBPobkQ0eDU" target="_blank"><img src="{{url_for('static', filename='skype.png')}}" height="25" style="vertical-align: middle;"></a>
+      <a href="https://www.linkedin.com/in/aasif-rahman/" target="_blank"><img src="{{url_for('static', filename='linkedin.png')}}" height="25" style="vertical-align: middle;"></a>
+      <a href="https://www.facebook.com/aasif.rahman.77/" target="_blank"><img src="{{url_for('static', filename='facebook.png')}}" height="25" style="vertical-align: middle;"></a>
+      <a href="https://www.instagram.com/asifrahman15/" target="_blank"><img src="{{url_for('static', filename='instagram.png')}}" height="25" style="vertical-align: middle;"></a>
+      
+    </div>
+  </footer>
+</body>
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover();    
+    $('#screenshot').change(function(){
+      if ($(this).prop('checked') == true){
+        $('#screenshotStatus').css('display', 'block')
+      } else {
+        $('#screenshotStatus').css('display', 'none')
+      }
+    })
+  });
+</script>
+</html>

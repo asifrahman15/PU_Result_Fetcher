@@ -36,8 +36,7 @@ def getAllSemesterResult(driver, registerNumber, semesterfrom, semesterTo, scree
     
     if isAlert:
       driver.switch_to.alert.accept()
-      print('No Data Found in the semester ' + str(semester) + ' for ' + str(registerNumber))
-    
+      
     else:  
       # Explicit Wait -->
       try:
